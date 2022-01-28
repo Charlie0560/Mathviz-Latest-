@@ -1,0 +1,22 @@
+.table table tbody tr td,
+.table table thead tr th{
+    width: 80px;
+}
+.table table tbody tr td,
+.table table thead tr th{
+    text-align: center;
+    border: 1px solid gray;
+    overflow-x: scroll;
+
+}
+
+@media (max-width: 768px) {
+    .tableitem{
+        display: flex;
+        justify-content: center;
+    }
+    
+}
+/* @media (max-width : 600px) {
+    
+} */
