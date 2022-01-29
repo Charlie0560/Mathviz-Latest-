@@ -17,7 +17,7 @@ simpsons = Blueprint("simpsons", __name__)
 def postI():
     # Code to accept input from the user.
     input = request.json
-    partitions = input["partitions"] if "partitions" in input else None
+    partitions = None
     fx = input["fx"]
     fx = sp.sympify(fx)
     mode = input["mode"]
@@ -91,90 +91,94 @@ def postII():
         f"fx = {fx}, mode = {mode}, x_l = {x_l} x_u = {x_u} partitions = {partitions}"
     )
 
-    # Creating initial figure of required size.
-    fig = Figure(figsize=(10, 10), dpi=80, facecolor="w", edgecolor="k")
-    ax = fig.subplots()
-    X0 = None
-    Y0 = None
-    Simson = None
+    if partitions:
+        # Creating initial figure of required size.
+        fig = Figure(figsize=(10, 10), dpi=80, facecolor="w", edgecolor="k")
+        ax = fig.subplots()
+        X0 = None
+        Y0 = None
+        Simson = None
 
-    try:
-        ax.set_title(f"Simpsons rule: plot of f = {fx}")
+        try:
+            ax.set_title(f"Simpsons rule: plot of f = {fx}")
 
-        ax.set_xlabel("x")
-        ax.set_ylabel("y")
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
 
-        step_size = (x_u - x_l + 1) / 1000.0
+            step_size = (x_u - x_l + 1) / 1000.0
 
-        x_plot = np.arange(x_l, x_u + step_size, step_size)
-        # current_app.logger.info(f'{x_plot}')
-        y_plot = []
-        x = sp.var("x")
-        for i in range(len(x_plot)):
-            y_plot.append(sp.limit(fx, x, x_plot[i]))
+            x_plot = np.arange(x_l, x_u + step_size, step_size)
+            # current_app.logger.info(f'{x_plot}')
+            y_plot = []
+            x = sp.var("x")
+            for i in range(len(x_plot)):
+                y_plot.append(sp.limit(fx, x, x_plot[i]))
 
-        # current_app.logger.info(f'{y_plot}')
+            # current_app.logger.info(f'{y_plot}')
 
-        ax.plot(x_plot, y_plot, "r")
-        ax.axvline(x=0, color="b")
-        ax.axhline(y=0, color="b")
-        ax.vlines(x=x_l, ymin=0, ymax=float(sp.limit(fx, x, x_l)))
-        ax.vlines(x=x_u, ymin=0, ymax=float(sp.limit(fx, x, x_u)))
+            ax.plot(x_plot, y_plot, "r")
+            ax.axvline(x=0, color="b")
+            ax.axhline(y=0, color="b")
+            ax.vlines(x=x_l, ymin=0, ymax=float(sp.limit(fx, x, x_l)))
+            ax.vlines(x=x_u, ymin=0, ymax=float(sp.limit(fx, x, x_u)))
 
-        # # PART : 2
-        # if partitions:
-        f = fx
-        n = partitions
-        if n % 2 == 0:
-            h = (x_u - x_l) / n
-            X = []
-            Y = []
-            x_temp = x_l
-            for i in range(n + 1):
-                X.append(x_temp)
-                # Y.append(f.subs(x,x_temp))
-                Y.append(float(sp.limit(f, x, x_temp)))
-                x_temp = x_temp + h
-            i = 0
-            while i < n:
-                k = (int(X[i + 2] - X[i]) + 1) * 10
-                x_s = np.linspace(X[i], X[i + 2], k)
-                y_s = [
-                    float(
-                        Y[i]
-                        + (((x_s[j] - X[i]) / h) * (Y[i + 1] - Y[i]))
-                        + (
-                            (
+            # # PART : 2
+            # if partitions:
+            f = fx
+            n = partitions
+            if n % 2 == 0:
+                h = (x_u - x_l) / n
+                X = []
+                Y = []
+                x_temp = x_l
+                for i in range(n + 1):
+                    X.append(x_temp)
+                    # Y.append(f.subs(x,x_temp))
+                    Y.append(float(sp.limit(f, x, x_temp)))
+                    x_temp = x_temp + h
+                i = 0
+                while i < n:
+                    k = (int(X[i + 2] - X[i]) + 1) * 10
+                    x_s = np.linspace(X[i], X[i + 2], k)
+                    y_s = [
+                        float(
+                            Y[i]
+                            + (((x_s[j] - X[i]) / h) * (Y[i + 1] - Y[i]))
+                            + (
                                 (
-                                    x_s[j] * x_s[j]
-                                    - x_s[j] * (X[i] + X[i + 1])
-                                    + X[i] * X[i + 1]
+                                    (
+                                        x_s[j] * x_s[j]
+                                        - x_s[j] * (X[i] + X[i + 1])
+                                        + X[i] * X[i + 1]
+                                    )
+                                    / (2 * h * h)
                                 )
-                                / (2 * h * h)
+                                * (Y[i + 2] - 2 * Y[i + 1] + Y[i])
                             )
-                            * (Y[i + 2] - 2 * Y[i + 1] + Y[i])
                         )
+                        for j in range(k)
+                    ]
+                    ax.vlines(x=X[i], ymin=0, ymax=Y[i])
+                    ax.vlines(
+                        x=X[i + 1], ymin=0, ymax=Y[i + 1], color="grey", linestyles="--"
                     )
-                    for j in range(k)
-                ]
-                ax.vlines(x=X[i], ymin=0, ymax=Y[i])
-                ax.vlines(
-                    x=X[i + 1], ymin=0, ymax=Y[i + 1], color="grey", linestyles="--"
-                )
-                # plt.vlines(x=X[i+1],ymin=0, ymax=Y[i+1],color='grey',linestyles='--')
-                ax.plot(x_s, y_s)
-                i = i + 2
+                    # plt.vlines(x=X[i+1],ymin=0, ymax=Y[i+1],color='grey',linestyles='--')
+                    ax.plot(x_s, y_s)
+                    i = i + 2
 
-            ax.vlines(x=X[n], ymin=0, ymax=Y[n])
+                ax.vlines(x=X[n], ymin=0, ymax=Y[n])
 
-    except Exception as e:
-        current_app.logger.exception("Something went wrong")
-        ax.set_title("Error: Something went wrong")
-        
-    with io.BytesIO() as pseudo_file:
-        FigureCanvas(fig).print_png(pseudo_file)
-        content = pseudo_file.getvalue()
-        return Response(content, mimetype="image/png")
+        except Exception as e:
+            current_app.logger.exception("Something went wrong")
+            ax.set_title("Error: Something went wrong")
+
+        with io.BytesIO() as pseudo_file:
+            FigureCanvas(fig).print_png(pseudo_file)
+            content = pseudo_file.getvalue()
+            return Response(content, mimetype="image/png")
+
+    else:
+        return None
 
 
 @simpsons.route("/runtable", methods=["POST"])

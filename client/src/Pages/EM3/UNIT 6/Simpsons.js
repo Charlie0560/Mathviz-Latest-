@@ -160,7 +160,6 @@ export default function Simpsons() {
       fx,
       x_l: xLower,
       x_u: xUpper,
-      partitions,
     };
     console.log(JSON.stringify(data));
     if (
@@ -185,7 +184,26 @@ export default function Simpsons() {
           setResp(URL.createObjectURL(imageBlob));
           setShowPartitions(true);
         });
+    }
+  };
 
+  const graph = () => {
+    if (!isVisible) return;
+    const data = {
+      mode,
+      fx,
+      x_l: xLower,
+      x_u: xUpper,
+      partitions,
+    };
+    console.log(JSON.stringify(data));
+    if (
+      mode !== 'select' &&
+      fx !== undefined &&
+      xLower !== undefined &&
+      xUpper !== undefined
+    ) {
+      setLoading(true);
       fetch('/api/simpsons/runGraphsII', {
         method: 'POST',
         headers: {
@@ -218,7 +236,6 @@ export default function Simpsons() {
     }
   };
 
-  const tex = `$$\\int_{a}^{b} f(x)dx\\approx \\frac{b-a}{6}\\left[f(a) + 4f\\left(\\frac{a+b}{2}\\right)+f(b)\\right]$$`;
   return (
     <Grid container spacing={2} sx={{ paddingInline: '15%' }}>
       <Grid item xs={12}>
@@ -315,8 +332,17 @@ export default function Simpsons() {
               </label>
               <br />
               <br />
+              {/* {loading ? (
+                <CircularProgress />
+              ) : (
+                <Button onClick={apiCall}> Submit </Button>
+              )} */}
+              <Button onClick={apiCall}> Submit </Button>
+            </Item>
+            <Item>
               {showPartitions && (
                 <label>
+                  <br></br>
                   partitions{' '}
                   <TextField
                     label='partitions(even)'
@@ -330,16 +356,13 @@ export default function Simpsons() {
                       }
                     }}
                   />
+                  <br />
+                  <br />
+                  <Button onClick={graph}> Submit </Button>
                 </label>
               )}
             </Item>
-            <Item>
-              {loading ? (
-                <CircularProgress />
-              ) : (
-                <Button onClick={apiCall}> Submit </Button>
-              )}
-            </Item>
+
             <Item>
               {showPartitions && (
                 <TableContainer component={Paper}>
