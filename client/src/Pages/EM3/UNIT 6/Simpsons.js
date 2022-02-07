@@ -1,42 +1,42 @@
 // React and MUI
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import TextField from '@mui/material/TextField';
-import { Grid } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TablePagination from '@mui/material/TablePagination';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import { Paper, CircularProgress, LinearProgress, Button } from '@mui/material';
+import * as React from "react";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import TextField from "@mui/material/TextField";
+import { Grid } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableFooter from "@mui/material/TableFooter";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TablePagination from "@mui/material/TablePagination";
+import IconButton from "@mui/material/IconButton";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
+import { Paper, CircularProgress, LinearProgress, Button } from "@mui/material";
 
 // File imports
-import simp from './simpsons.svg';
-import './theory.css';
+import simp from "./simpsons.svg";
+import "./theory.css";
 
-var Latex = require('react-latex');
+var Latex = require("react-latex");
 
 const P = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
 }));
 
 function Item(props) {
   return (
-    <P variant='outlined' style={{ margin: '15px' }} square>
+    <P variant="outlined" style={{ margin: "15px" }} square>
       {props.children}
     </P>
   );
@@ -67,16 +67,16 @@ function TablePaginationActions(props) {
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
-        aria-label='first page'
+        aria-label="first page"
       >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
-        aria-label='previous page'
+        aria-label="previous page"
       >
-        {theme.direction === 'rtl' ? (
+        {theme.direction === "rtl" ? (
           <KeyboardArrowRight />
         ) : (
           <KeyboardArrowLeft />
@@ -85,9 +85,9 @@ function TablePaginationActions(props) {
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label='next page'
+        aria-label="next page"
       >
-        {theme.direction === 'rtl' ? (
+        {theme.direction === "rtl" ? (
           <KeyboardArrowLeft />
         ) : (
           <KeyboardArrowRight />
@@ -96,9 +96,9 @@ function TablePaginationActions(props) {
       <IconButton
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label='last page'
+        aria-label="last page"
       >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </Box>
   );
@@ -112,9 +112,9 @@ TablePaginationActions.propTypes = {
 };
 
 export default function Simpsons() {
-  const [mode, setMode] = useState('select');
+  const [mode, setMode] = useState("select");
   const [loading, setLoading] = useState(false);
-  const isVisible = mode !== 'select' ? true : false;
+  const isVisible = mode !== "select" ? true : false;
   const [fx, setFx] = useState();
   const [xLower, setXLower] = useState();
   const [xUpper, setXUpper] = useState();
@@ -144,7 +144,7 @@ export default function Simpsons() {
 
   // Setting page title
   useEffect(() => {
-    document.title = 'Simpsons: Enter the Integrand and its limits';
+    document.title = "Simpsons: Enter the Integrand and its limits";
   });
 
   useEffect(() => {
@@ -163,16 +163,16 @@ export default function Simpsons() {
     };
     console.log(JSON.stringify(data));
     if (
-      mode !== 'select' &&
+      mode !== "select" &&
       fx !== undefined &&
       xLower !== undefined &&
       xUpper !== undefined
     ) {
       setLoading(true);
-      fetch('/api/simpsons/run', {
-        method: 'POST',
+      fetch("/api/simpsons/run", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       })
@@ -198,16 +198,16 @@ export default function Simpsons() {
     };
     console.log(JSON.stringify(data));
     if (
-      mode !== 'select' &&
+      mode !== "select" &&
       fx !== undefined &&
       xLower !== undefined &&
       xUpper !== undefined
     ) {
       setLoading(true);
-      fetch('/api/simpsons/runGraphsII', {
-        method: 'POST',
+      fetch("/api/simpsons/runGraphsII", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       })
@@ -220,10 +220,10 @@ export default function Simpsons() {
           setShowPartitions(true);
         });
 
-      fetch('/api/simpsons/runtable', {
-        method: 'POST',
+      fetch("/api/simpsons/runtable", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       }).then((r) => {
@@ -237,13 +237,13 @@ export default function Simpsons() {
   };
 
   return (
-    <Grid container spacing={2} sx={{ paddingInline: '15%' }}>
+    <Grid container spacing={2} sx={{ paddingInline: "15%" }}>
       <Grid item xs={12}>
         <h1>Simpsons 1/3rd Rule</h1>
       </Grid>
       <Grid item xs={12}>
-        <p className='theory-text'>
-          {' '}
+        <p className="theory-text">
+          {" "}
           <i>
             In numerical integration, Simpson's rules are several approximations
             for definite integrals, named after Thomas Simpson (1710–1761). The
@@ -256,13 +256,13 @@ export default function Simpsons() {
 
       <Grid item xs={12}>
         <center>
-          <img src={simp} alt='formula' />
+          <img src={simp} alt="formula" style={{width: "60%"}} />
         </center>
       </Grid>
       <Grid item xs={12}>
         <Item>
           <label>
-            Enter mode as :{' '}
+            Enter mode as :{" "}
             <select
               onChange={(e) => {
                 if (e.target.value) {
@@ -271,9 +271,9 @@ export default function Simpsons() {
               }}
               value={mode}
             >
-              <option value='select'>select</option>
-              <option value='radian'>radian</option>
-              <option value='degrees'>degrees</option>
+              <option value="select">select</option>
+              <option value="radian">radian</option>
+              <option value="degrees">degrees</option>
             </select>
           </label>
         </Item>
@@ -285,10 +285,10 @@ export default function Simpsons() {
             <Item>
               <br />
               <label>
-                Enter f(x) {' : '} &emsp;
+                Enter f(x) {" : "} &emsp;
                 <TextField
-                  label='f(x)'
-                  variant='filled'
+                  label="f(x)"
+                  variant="filled"
                   onChange={(e) => {
                     if (e.target.value) {
                       setFx(e.target.value);
@@ -299,10 +299,10 @@ export default function Simpsons() {
               <br />
               <br />
               <label>
-                x lower limit {' : '}
+                x lower limit {" : "}
                 <TextField
-                  label='x lower'
-                  variant='filled'
+                  label="x lower"
+                  variant="filled"
                   defaultValue={xLower}
                   onChange={(e) => {
                     if (e.target.value) {
@@ -316,10 +316,10 @@ export default function Simpsons() {
               <br />
               <br />
               <label>
-                x upper limit {' : '}
+                x upper limit {" : "}
                 <TextField
-                  label='x upper'
-                  variant='filled'
+                  label="x upper"
+                  variant="filled"
                   defaultValue={xUpper}
                   onChange={(e) => {
                     if (e.target.value) {
@@ -339,14 +339,14 @@ export default function Simpsons() {
               )} */}
               <Button onClick={apiCall}> Submit </Button>
             </Item>
-            <Item>
-              {showPartitions && (
+            {showPartitions && (
+              <Item>
                 <label>
                   <br></br>
-                  partitions{' '}
+                  partitions{" "}
                   <TextField
-                    label='partitions(even)'
-                    variant='filled'
+                    label="partitions(even)"
+                    variant="filled"
                     defaultValue={partitions}
                     onChange={(e) => {
                       if (e.target.value) {
@@ -360,22 +360,22 @@ export default function Simpsons() {
                   <br />
                   <Button onClick={graph}> Submit </Button>
                 </label>
-              )}
-            </Item>
+              </Item>
+            )}
 
-            <Item>
-              {showPartitions && (
+            {showPartitions && (
+              <Item>
                 <TableContainer component={Paper}>
                   <Table
                     sx={{ minWidth: 500 }}
-                    aria-label='custom pagination table'
+                    aria-label="custom pagination table"
                   >
                     <TableHead>
                       <TableRow>
-                        <TableCell component='th' scope='row'>
+                        <TableCell component="th" scope="row">
                           <Latex>$$x$$</Latex>
                         </TableCell>
-                        <TableCell component='th' scope='row'>
+                        <TableCell component="th" scope="row">
                           <Latex>$$y$$</Latex>
                         </TableCell>
                       </TableRow>
@@ -389,10 +389,10 @@ export default function Simpsons() {
                         : rows
                       ).map((row) => (
                         <TableRow key={row.key}>
-                          <TableCell style={{ width: 160 }} align='left'>
+                          <TableCell style={{ width: 160 }} align="left">
                             {row.one}
                           </TableCell>
-                          <TableCell style={{ width: 160 }} align='left'>
+                          <TableCell style={{ width: 160 }} align="left">
                             {row.two}
                           </TableCell>
                         </TableRow>
@@ -407,12 +407,12 @@ export default function Simpsons() {
                     <TableFooter>
                       <TableRow>
                         <TablePagination
-                          align='left'
+                          align="left"
                           rowsPerPageOptions={[
                             5,
                             10,
                             25,
-                            { label: 'All', value: -1 },
+                            { label: "All", value: -1 },
                           ]}
                           colSpan={3}
                           count={rows.length}
@@ -420,7 +420,7 @@ export default function Simpsons() {
                           page={page}
                           SelectProps={{
                             inputProps: {
-                              'aria-label': 'rows per page',
+                              "aria-label": "rows per page",
                             },
                             native: true,
                           }}
@@ -432,20 +432,20 @@ export default function Simpsons() {
                     </TableFooter>
                   </Table>
                 </TableContainer>
-              )}
-            </Item>
+              </Item>
+            )}
             {(actual || calculated) && (
               <Item>
                 <TableContainer>
-                  <Table aria-label='simple table'>
+                  <Table aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell align='center'>Actual Area</TableCell>
-                        <TableCell align='center'>{actual}</TableCell>
+                        <TableCell align="center">Actual Area</TableCell>
+                        <TableCell align="center">{actual}</TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell align='center'>Calculated Area</TableCell>
-                        <TableCell align='center'>{calculated}</TableCell>
+                        <TableCell align="center">Calculated Area</TableCell>
+                        <TableCell align="center">{calculated}</TableCell>
                       </TableRow>
                     </TableHead>
                   </Table>
@@ -457,20 +457,20 @@ export default function Simpsons() {
       </Grid>
       <Grid item xs={12} sm={6}>
         {isVisible && (
-          <div className='graph'>
-            {loading && <LinearProgress color='inherit' />}
+          <div className="graph">
+            {loading && <LinearProgress color="inherit" />}
             {resp && (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
                 <img
-                  style={{ width: '35vw' }}
+                  style={{ width: "35vw" }}
                   src={resp}
-                  alt='... loading '
+                  alt="... loading "
                 ></img>
-                <img
-                  style={{ width: '35vw' }}
+                {graphII && <img
+                  style={{ width: "35vw" }}
                   src={graphII}
-                  alt='... loading '
-                ></img>
+                  alt="... loading "
+                ></img>}
               </div>
             )}
           </div>

@@ -1,13 +1,13 @@
-import React from 'react';
-import Drawer from './components/Dashboard/Drawer';
-import Footer from './components/Footer/Footer';
-import Navbar from './components/Navbar/Navbar';
+import React from "react";
+import Drawer from "./components/Dashboard/Drawer";
+import Footer from "./components/Footer/Footer";
+import Navbar from "./components/Navbar/Navbar";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
-    <div className='app-container'>
+    <div className="app-container">
       <Navbar />
 
       <Footer />
